@@ -1,0 +1,15 @@
+*.log
+.gradle/*
+.idea
+*.iml
+build/*
+**/build/*
+dist
+lib/*
+logs/*
+modules/*
+target/*
+test-result/*
+tmp/*
+out/*
+classes/*
