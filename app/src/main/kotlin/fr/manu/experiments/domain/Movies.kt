@@ -1,7 +1,6 @@
 package fr.manu.experiments.domain
 
 import java.io.File
-import java.util.regex.Pattern
 
 data class Movie(val movieId: Long, val title: String, val genres: List<Genre>)
 
@@ -42,7 +41,11 @@ private val movies by lazy {
             Movie(
                 it[0].toLong(),
                 it[1],
-                if (it[2] == "(no genres listed)") emptyList() else it[2].split("|").map { Genre.from(it) }
+                if (it[2] == "(no genres listed)") emptyList() else it[2].split("|").map {
+                    Genre.from(
+                        it
+                    )
+                }
             )
         } union
             lines.filter { it.contains("\"") }
@@ -51,7 +54,11 @@ private val movies by lazy {
                     Movie(
                         it[0].toLong(),
                         it[1],
-                        if (it[2] == "(no genres listed)") emptyList() else it[2].split("|").map { Genre.from(it) }
+                        if (it[2] == "(no genres listed)") emptyList() else it[2].split("|").map {
+                            Genre.from(
+                                it
+                            )
+                        }
                     )
                 }
 }
