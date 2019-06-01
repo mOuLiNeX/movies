@@ -5,6 +5,10 @@ plugins {
 group 'fr.manu.experiments'
 version '1.0-SNAPSHOT'
 
+ext {
+    http4kVersion = "3.151.0"
+}
+
 subprojects {
     apply plugin: 'kotlin'
 

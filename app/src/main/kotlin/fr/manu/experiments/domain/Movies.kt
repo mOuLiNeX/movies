@@ -1,6 +1,8 @@
 package fr.manu.experiments.domain
 
+import fr.manu.experiments.infra.gaussianRandomTimer
 import java.io.File
+import java.util.concurrent.TimeUnit
 
 data class Movie(val movieId: Long, val title: String, val genres: List<Genre>)
 
@@ -63,6 +65,18 @@ private val movies by lazy {
                 }
 }
 
-fun findMovieBy(movieId: Long) = movies.find { it.movieId == movieId }
+private fun findMovieBy(movieId: Long) = movies.find { it.movieId == movieId }
 
-fun findRandomMovie() = movies.random()
+private fun findRandomMovie(): Movie {
+    TimeUnit.MILLISECONDS.sleep(gaussianRandomTimer(50, 15))
+    return movies.random()
+}
+
+data class CompleteMovie(val movie: Movie, val ratings: Rating?, val tag: Tag?)
+
+fun findCompleteRandomMovie(): CompleteMovie {
+    val movie = findRandomMovie()
+    val rating = findRatingBy(movie.movieId)
+    val tag = findTagBy(movie.movieId)
+    return CompleteMovie(movie, rating, tag)
+}

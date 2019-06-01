@@ -1,9 +1,11 @@
 package fr.manu.experiments.domain
 
+import fr.manu.experiments.infra.gaussianRandomTimer
 import java.io.File
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
+import java.util.concurrent.TimeUnit
 
 data class Rating(val userId: Long, val movieId: Long, val rating: Float, val timestamp: LocalDateTime)
 
@@ -22,4 +24,7 @@ private val ratings by lazy {
         }.toSet()
 }
 
-fun findRatingBy(movieId: Long) = ratings.find { it.movieId == movieId }
+fun findRatingBy(movieId: Long): Rating? {
+    TimeUnit.MILLISECONDS.sleep(gaussianRandomTimer(200, 15))
+    return ratings.find { it.movieId == movieId }
+}

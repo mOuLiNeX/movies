@@ -1,9 +1,11 @@
 package fr.manu.experiments.domain
 
+import fr.manu.experiments.infra.gaussianRandomTimer
 import java.io.File
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
+import java.util.concurrent.TimeUnit
 
 data class Tag(val userId: Long, val movieId: Long, val tag: String, val timestamp: LocalDateTime)
 
@@ -22,4 +24,7 @@ private val tags by lazy {
         }.toSet()
 }
 
-fun findTagBy(movieId: Long) = tags.find { it.movieId == movieId }
+fun findTagBy(movieId: Long): Tag? {
+    TimeUnit.MILLISECONDS.sleep(gaussianRandomTimer(200, 25))
+    return tags.find { it.movieId == movieId }
+}
