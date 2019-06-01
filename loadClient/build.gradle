@@ -1,0 +1,7 @@
+plugins {
+    id "com.github.lkishalmi.gatling" version "3.0.2"
+}
+
+gatling {
+    jvmArgs = [ '-server', '-Xms512M', '-Xmx512M' ]
+}

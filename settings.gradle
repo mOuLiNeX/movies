@@ -2,3 +2,4 @@ rootProject.name = 'movies'
 
 include 'client'
 include 'app'
+include 'loadClient'
