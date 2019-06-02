@@ -1,7 +1,7 @@
 package fr.manu.experiments.domain
 
+import fr.manu.experiments.LOGGER
 import fr.manu.experiments.infra.gaussianRandomTimer
-import java.io.File
 import java.util.concurrent.TimeUnit
 
 data class Movie(val movieId: Long, val title: String, val genres: List<Genre>)
@@ -34,35 +34,37 @@ enum class Genre(val text: String) {
 }
 
 private val movies by lazy {
-    val lines = File(Movie::class.java.classLoader.getResource("movies.csv").file)
-        .readLines()
-        .drop(1)
+    val reader = Movie::class.java.classLoader.getResourceAsStream("movies.csv").bufferedReader()
+    LOGGER.info("Loading movies from file")
+    reader.use {
+        val lines = reader.readLines().drop(1)
 
-    lines.filterNot { it.contains("\"") }.map { line -> line.split(",") }
-        .map {
-            Movie(
-                it[0].toLong(),
-                it[1],
-                if (it[2] == "(no genres listed)") emptyList() else it[2].split("|").map {
-                    Genre.from(
-                        it
-                    )
-                }
-            )
-        } union
-            lines.filter { it.contains("\"") }
-                .map { line -> line.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)".toRegex()) }
-                .map {
-                    Movie(
-                        it[0].toLong(),
-                        it[1],
-                        if (it[2] == "(no genres listed)") emptyList() else it[2].split("|").map {
-                            Genre.from(
-                                it
-                            )
-                        }
-                    )
-                }
+        lines.filterNot { it.contains("\"") }.map { line -> line.split(",") }
+            .map {
+                Movie(
+                    it[0].toLong(),
+                    it[1],
+                    if (it[2] == "(no genres listed)") emptyList() else it[2].split("|").map {
+                        Genre.from(
+                            it
+                        )
+                    }
+                )
+            } union
+                lines.filter { it.contains("\"") }
+                    .map { line -> line.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)".toRegex()) }
+                    .map {
+                        Movie(
+                            it[0].toLong(),
+                            it[1],
+                            if (it[2] == "(no genres listed)") emptyList() else it[2].split("|").map {
+                                Genre.from(
+                                    it
+                                )
+                            }
+                        )
+                    }
+    }
 }
 
 private fun findMovieBy(movieId: Long) = movies.find { it.movieId == movieId }

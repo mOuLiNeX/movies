@@ -1,0 +1,32 @@
+version: '3.7'
+services:
+  autoheal: #https://stackoverflow.com/a/48538213
+    restart: always
+    image: willfarrell/autoheal
+    environment:
+      - AUTOHEAL_CONTAINER_LABEL=all
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  server:
+    build: ./app
+    labels:
+      - autoheal=true
+    environment:
+      - JAVA_OPTS=-server -XX:+UseContainerSupport -XX:MaxRAMPercentage=70.0 -XshowSettings:vm -Dsun.net.inetaddr.ttl=4 -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.rmi.port=9010 -Dcom.sun.management.jmxremote.port=9010 -Dcom.sun.management.jmxremote.local.only=false -Djava.rmi.server.hostname=0.0.0.0
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 128M
+        reservations:
+          cpus: '0.50'
+          memory: 128M
+    ports:
+      - "8080:8080"
+      - "9010:9010" # JMX

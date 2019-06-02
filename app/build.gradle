@@ -1,3 +1,11 @@
+plugins {
+    id 'application'
+}
+
+application {
+    mainClassName = 'fr.manu.experiments.ServerKt'
+}
+
 dependencies {
     compile group: "org.http4k", name: "http4k-core", version: http4kVersion
     compile group: "org.http4k", name: "http4k-server-jetty", version: http4kVersion
@@ -8,5 +16,4 @@ dependencies {
     compile 'io.micrometer:micrometer-registry-jmx:latest.release'
 
     compile group: 'org.eclipse.jetty', name: 'jetty-jmx', version: '9.4.+'
-
 }

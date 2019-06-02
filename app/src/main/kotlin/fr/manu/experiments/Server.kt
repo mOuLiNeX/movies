@@ -16,8 +16,9 @@ import org.http4k.format.Jackson.auto
 import org.http4k.server.Jetty
 import org.http4k.server.asServer
 import java.lang.management.ManagementFactory
+import java.util.concurrent.TimeUnit
 
-private val LOGGER: Logger = LoggerFactory.getLogger("fr.manu.experiments.movies.MainKt")
+val LOGGER: Logger = LoggerFactory.getLogger("fr.manu.experiments.movies.MainKt")
 private const val httpPort = 8080
 
 fun main() {
