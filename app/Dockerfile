@@ -2,7 +2,7 @@ FROM openjdk:8-jre
 
 WORKDIR /opt
 
-# configure the "inativ" user
+# configure the user
 RUN /usr/sbin/useradd --create-home --home-dir /home/anonymous --shell /bin/bash anonymous
 
 ENV TZ Europe/Paris
